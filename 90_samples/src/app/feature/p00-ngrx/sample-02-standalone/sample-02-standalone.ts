@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { P00NgrxNavi } from '../layout/p00-ngrx-navi/p00-ngrx-navi';
 import { LessonCard } from './children/lesson-card/lesson-card';
 import type { Lesson } from './models/lesson';
 
 @Component({
   selector: 'app-sample-02-standalone',
-  imports: [LessonCard],
+  imports: [P00NgrxNavi, LessonCard],
   templateUrl: './sample-02-standalone.html',
   styleUrl: './sample-02-standalone.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

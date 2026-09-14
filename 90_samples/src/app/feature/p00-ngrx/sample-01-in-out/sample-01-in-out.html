@@ -1,5 +1,7 @@
 <h2>input() / output() / model()</h2>
 
+<app-p00-ngrx-navi />
+
 <section class="parent">
   <h3>親コンポーネント</h3>
 
@@ -19,8 +21,11 @@
     <app-inner-a
       [message]="messageForChild()"          // [message]は子が宣言しているinput.required、messageForChild()は親が宣言したSignal
       [(count)]="count"                      // [(count)]は子のcount、"count"は親のcount
-      (messageSent)="receiveMessage($event)" // 子が宣言したoutput、receiveMessage($event)き親が持つメソッド
+      (messageSent)="receiveMessage($event)" // 子が宣言したoutput、親が持つメソッドreceiveMessage($event)
     />
+
+    [子input]="親signal"
+    (子output)="親method"
   -->
 
 </section>

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { P00NgrxNavi } from '../layout/p00-ngrx-navi/p00-ngrx-navi';
 import { InnerA } from './children/inner-a/inner-a';
 
 @Component({
   selector: 'app-sample-01-in-out',
-  imports: [InnerA],
+  imports: [P00NgrxNavi, InnerA],
   styleUrl: './sample-01-in-out.scss',
   templateUrl: './sample-01-in-out.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
