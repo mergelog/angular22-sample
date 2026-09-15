@@ -5,6 +5,7 @@ import {
   CafeDashboard,
   CafeGuest,
   CafeOrder,
+  CafeReservation,
   CafeTable,
   TableClassification,
   TableStatus,
@@ -25,6 +26,7 @@ interface SimulatedTable {
   orderConfirmedAt: number | undefined;
   servedAt: number | undefined;
   activeOrderIds: string[];
+  reservations: CafeReservation[];
   billingAmount: number;
   guestsToday: number;
   occupiedMsToday: number;
@@ -153,6 +155,19 @@ export class CafeSimulationStore {
     return this.toSnapshot(table, now, Math.max(1, now - this.openedAt));
   }
 
+  addReservation(tableNumber: string, reservation: CafeReservation): CafeTable | undefined {
+    const table = this.findTable(tableNumber);
+
+    if (!table) {
+      return undefined;
+    }
+
+    const now = Date.now();
+    this.advance(now);
+    table.reservations.push({ ...reservation });
+    return this.toSnapshot(table, now, Math.max(1, now - this.openedAt));
+  }
+
   getOrders(): readonly CafeOrder[] {
     return [...this.orders];
   }
@@ -278,6 +293,7 @@ export class CafeSimulationStore {
         orderConfirmedAt: undefined,
         servedAt: undefined,
         activeOrderIds: [],
+        reservations: [],
         billingAmount: 0,
         guestsToday: this.randomInteger(0, 5) * definition.capacity + people,
         occupiedMsToday: Math.round(businessElapsed * historicalUsageRatio),
@@ -323,6 +339,7 @@ export class CafeSimulationStore {
       classification: table.classification,
       status: table.status,
       guestIds: [...table.guestIds],
+      予約: table.reservations.map((reservation) => ({ ...reservation })),
       stateElapsedSeconds: Math.max(0, Math.floor((now - table.stateChangedAt) / SECOND)),
       statusDurationsSeconds: this.toStatusDurationsSeconds(table, now),
       people: table.people,

@@ -78,4 +78,24 @@ describe('CafeSimulationStore', () => {
     });
     expect(order.durations.mealMs).toBeUndefined();
   });
+
+  it('指定テーブルへ予約を追加する', () => {
+    const store = TestBed.inject(CafeSimulationStore);
+
+    const table = store.addReservation('T01', {
+      予約時間: '2026-09-15T10:00:00.000Z',
+      滞在予定時間: 90,
+      予約名: '山田 花子',
+      人数: 1,
+    });
+
+    expect(table?.予約).toEqual([
+      {
+        予約時間: '2026-09-15T10:00:00.000Z',
+        滞在予定時間: 90,
+        予約名: '山田 花子',
+        人数: 1,
+      },
+    ]);
+  });
 });

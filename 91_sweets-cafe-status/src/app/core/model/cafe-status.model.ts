@@ -19,6 +19,8 @@ export interface CafeTable {
   readonly status: TableStatus;
   // 現在このテーブルを利用している来客の ID 一覧です。
   readonly guestIds: readonly string[];
+  // このテーブルに登録されている予約の一覧です。
+  readonly 予約: readonly CafeReservation[];
   // 現在のステータスになってからの経過時間（秒）です。
   readonly stateElapsedSeconds: number;
   // ステータスごとの累計滞在時間（秒）です。
@@ -30,6 +32,20 @@ export interface CafeTable {
   // 営業時間に対する当日の利用率（%）です。
   readonly dailyUsageRate: number;
 }
+
+export interface CafeReservation {
+  // 予約日時（ISO 8601 形式）です。
+  readonly 予約時間: string;
+  // 予約時の滞在予定時間（分）です。
+  readonly 滞在予定時間: number;
+  // 予約者の名前です。
+  readonly 予約名: string;
+  // 予約人数です。
+  readonly 人数: number;
+}
+
+// 指定テーブルへ追加する予約の内容です。
+export type AddReservationRequest = CafeReservation;
 
 export interface CafeGuest {
   // 来客を一意に識別する ID です。

@@ -10,22 +10,24 @@ import { inject } from '@angular/core';
 import { mergeMap, Observable, of, throwError, timer } from 'rxjs';
 
 import { CAFE_CONFIG, CafeConfig } from '../config/cafe.config';
-import { TABLE_STATUSES, TableStatus, UpdateTableRequest } from '../model/cafe-status.model';
+import {
+  AddReservationRequest,
+  TABLE_STATUSES,
+  TableStatus,
+  UpdateTableRequest,
+} from '../model/cafe-status.model';
 import { CafeSimulationStore } from './cafe-simulation.store';
 
 const STATUS_API_URL = '/api/cafe-status';
 const ORDERS_API_URL = '/api/cafe-orders';
+const RESERVATIONS_PATH_SUFFIX = '/reservations';
 
 // [■観点:HttpInterceptorFn] 実サーバーの代わりに、この関数がローカルAPIを横取りします。
 export const cafeBackendInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
-  if (
-    request.url !== STATUS_API_URL &&
-    !request.url.startsWith(`${STATUS_API_URL}/`) &&
-    request.url !== ORDERS_API_URL
-  ) {
+  if (!isCafeApiRequest(request.url)) {
     return next(request);
   }
 
@@ -38,6 +40,21 @@ export const cafeBackendInterceptor: HttpInterceptorFn = (
       request.method === 'GET'
         ? of(new HttpResponse({ status: 200, body: store.getOrders() }))
         : methodNotAllowed(request.url);
+
+    return timer(getRandomApiResponseDelay(config)).pipe(mergeMap(() => response$));
+  }
+
+  const reservationTableNumber = tableNumberFromReservationsUrl(request.url);
+
+  if (reservationTableNumber !== undefined) {
+    if (request.method !== 'POST') {
+      response$ = methodNotAllowed(request.url);
+    } else {
+      const reservation = parseAddReservationRequest(request.body);
+      response$ = reservation
+        ? responseForAddedReservation(store.addReservation(reservationTableNumber, reservation))
+        : badRequest('予約時間、滞在予定時間、予約名、人数の値を確認してください。');
+    }
 
     return timer(getRandomApiResponseDelay(config)).pipe(mergeMap(() => response$));
   }
@@ -120,6 +137,45 @@ function parseUpdateRequest(body: unknown): UpdateTableRequest | undefined {
     ...(typeof people === 'number' ? { people } : {}),
     ...(typeof billingAmount === 'number' ? { billingAmount } : {}),
   };
+}
+
+function parseAddReservationRequest(body: unknown): AddReservationRequest | undefined {
+  if (!isRecord(body)) {
+    return undefined;
+  }
+
+  const { 予約時間, 滞在予定時間, 予約名, 人数 } = body;
+  const hasValidReservationTime =
+    typeof 予約時間 === 'string' && 予約時間.trim().length > 0 && !Number.isNaN(Date.parse(予約時間));
+  const hasValidExpectedStay =
+    typeof 滞在予定時間 === 'number' && Number.isInteger(滞在予定時間) && 滞在予定時間 > 0;
+  const hasValidReservationName = typeof 予約名 === 'string' && 予約名.trim().length > 0;
+  const hasValidPeople = typeof 人数 === 'number' && Number.isInteger(人数) && 人数 > 0;
+
+  if (!hasValidReservationTime || !hasValidExpectedStay || !hasValidReservationName || !hasValidPeople) {
+    return undefined;
+  }
+
+  return { 予約時間, 滞在予定時間, 予約名, 人数 };
+}
+
+function isCafeApiRequest(url: string): boolean {
+  return url === STATUS_API_URL || url.startsWith(`${STATUS_API_URL}/`) || url === ORDERS_API_URL;
+}
+
+function tableNumberFromReservationsUrl(url: string): string | undefined {
+  if (!url.startsWith(`${STATUS_API_URL}/`) || !url.endsWith(RESERVATIONS_PATH_SUFFIX)) {
+    return undefined;
+  }
+
+  const tableNumber = url.slice(STATUS_API_URL.length + 1, -RESERVATIONS_PATH_SUFFIX.length);
+  return tableNumber && !tableNumber.includes('/') ? decodeURIComponent(tableNumber) : undefined;
+}
+
+function responseForAddedReservation(table: unknown): Observable<HttpEvent<unknown>> {
+  return table
+    ? of(new HttpResponse({ status: 201, body: table }))
+    : notFound();
 }
 
 function isTableStatus(value: unknown): value is TableStatus {

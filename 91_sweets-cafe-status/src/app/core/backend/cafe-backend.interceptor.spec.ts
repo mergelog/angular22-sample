@@ -97,4 +97,24 @@ describe('cafeBackendInterceptor', () => {
       billingAmount: 0,
     });
   });
+
+  it('POSTで指定テーブルに予約を追加する', async () => {
+    const table = await firstValueFrom(
+      http.post<CafeTable>('/api/cafe-status/T01/reservations', {
+        予約時間: '2026-09-15T10:00:00.000Z',
+        滞在予定時間: 90,
+        予約名: '山田 花子',
+        人数: 2,
+      }),
+    );
+
+    expect(table.予約).toEqual([
+      {
+        予約時間: '2026-09-15T10:00:00.000Z',
+        滞在予定時間: 90,
+        予約名: '山田 花子',
+        人数: 2,
+      },
+    ]);
+  });
 });

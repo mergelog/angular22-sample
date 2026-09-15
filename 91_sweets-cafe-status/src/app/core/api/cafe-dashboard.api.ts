@@ -2,7 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CafeDashboard, CafeOrder, CafeTable, UpdateTableRequest } from '../model/cafe-status.model';
+import {
+  AddReservationRequest,
+  CafeDashboard,
+  CafeOrder,
+  CafeTable,
+  UpdateTableRequest,
+} from '../model/cafe-status.model';
 
 const API_URL = '/api/cafe-status';
 const ORDERS_API_URL = '/api/cafe-orders';
@@ -25,5 +31,12 @@ export class CafeDashboardApi {
 
   clearTable(tableNumber: string): Observable<CafeTable> {
     return this.http.delete<CafeTable>(`${API_URL}/${encodeURIComponent(tableNumber)}`);
+  }
+
+  addReservation(tableNumber: string, request: AddReservationRequest): Observable<CafeTable> {
+    return this.http.post<CafeTable>(
+      `${API_URL}/${encodeURIComponent(tableNumber)}/reservations`,
+      request,
+    );
   }
 }
