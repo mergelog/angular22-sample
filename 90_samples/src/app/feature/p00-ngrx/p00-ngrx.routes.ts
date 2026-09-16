@@ -55,6 +55,13 @@ export const P00_NGRX_ROUTES: Routes = [
       ),
   },
   {
+    path: 'sample-05-content-projection-class',
+    loadComponent: () =>
+      import('./sample-05-content-projection-class/sample-05-content-projection-class').then(
+        (m) => m.Sample05ContentProjectionClass,
+      ),
+  },
+  {
     path: 'sample-06-template-outlet',
     loadComponent: () =>
       import('./sample-06-template-outlet/sample-06-template-outlet').then(
@@ -66,6 +73,13 @@ export const P00_NGRX_ROUTES: Routes = [
     loadComponent: () =>
       import('./sample-06-template-outlet-basic/sample-06-template-outlet-basic').then(
         (m) => m.Sample06TemplateOutletBasic,
+      ),
+  },
+  {
+    path: 'sample-06-template-outlet-medium',
+    loadComponent: () =>
+      import('./sample-06-template-outlet-medium/sample-06-template-outlet-medium').then(
+        (m) => m.Sample06TemplateOutletMedium,
       ),
   },
   {
