@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { P01SignalsNavi } from '../layout/p01-signals-navi/p01-signals-navi';
 
 @Component({
   selector: 'app-sample-01-signal',
-  imports: [RouterLink],
+  imports: [P01SignalsNavi],
   templateUrl: './sample-01-signal.html',
   styleUrl: './sample-01-signal.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

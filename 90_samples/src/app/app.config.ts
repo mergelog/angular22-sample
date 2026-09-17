@@ -1,6 +1,6 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 
@@ -13,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([fooBackendInterceptor])),
     provideStore(),
     provideEffects(),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
   ],
 };

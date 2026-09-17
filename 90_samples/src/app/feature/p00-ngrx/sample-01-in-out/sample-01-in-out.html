@@ -21,7 +21,7 @@
     <app-inner-a
       [message]="messageForChild()"          // [message]は子が宣言しているinput.required、messageForChild()は親が宣言したSignal
       [(count)]="count"                      // [(count)]は子のcount、"count"は親のcount
-      (messageSent)="receiveMessage($event)" // 子が宣言したoutput、親が持つメソッドreceiveMessage($event)
+      (messageSent)="receiveMessage($event)" // (messageSent)は子が宣言しているoutput、親が持つメソッドreceiveMessage($event)
     />
 
     [子input]="親signal"
