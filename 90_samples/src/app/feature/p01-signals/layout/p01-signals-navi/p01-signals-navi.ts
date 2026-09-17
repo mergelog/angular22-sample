@@ -34,5 +34,7 @@ export class P01SignalsNavi {
     { path: 'sample-19-effect-cleanup', label: '19 onCleanup' },
     { path: 'sample-20-output-observable', label: '20 output RxJS' },
     { path: 'sample-21-injection-context', label: '21 injection context' },
+    { path: 'sample-22-ok-view-child', label: '22 viewChild OK' },
+    { path: 'sample-22-ng-view-child', label: '22 viewChild NG' },
   ];
 }

@@ -122,6 +122,20 @@ export const P01_SIGNALS_ROUTES: Routes = [
       ),
   },
   {
+    path: 'sample-22-ok-view-child',
+    loadComponent: () =>
+      import('./sample-22-ok-view-child/sample-22-ok-view-child').then(
+        (m) => m.Sample22OkViewChild,
+      ),
+  },
+  {
+    path: 'sample-22-ng-view-child',
+    loadComponent: () =>
+      import('./sample-22-ng-view-child/sample-22-ng-view-child').then(
+        (m) => m.Sample22NgViewChild,
+      ),
+  },
+  {
     path: 'sample-01-signal',
     loadComponent: () =>
       import('./sample-01-signal/sample-01-signal').then((m) => m.Sample01Signal),

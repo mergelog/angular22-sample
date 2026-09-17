@@ -18,7 +18,7 @@ src/apps/
 │   ├── p01-signals/                canvas / computed / novice
 │   ├── p02-ngrx-http/              listing-foo（NgRx で HTTP ポーリング）
 │   │   └── mod-httpInterceptorFn/  /api/foo を横取りするスタブバックエンド
-│   └── p03-map/                    canvas
+│   └── p03-compo/                  canvas
 └── web-app-common/
     └── store/foo/                  listing-foo が使うデータの store
 ```
@@ -47,4 +47,4 @@ count を増やしたダミーを返す。`provideState(fooFeature)` と `provid
 
 ## 未実装
 
-- p00-ngrx / p01-signals / p03-map の各ページは見出しとリンクだけの雛形
+- p00-ngrx / p01-signals / p03-compo の各ページは見出しとリンクだけの雛形

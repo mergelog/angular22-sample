@@ -20,8 +20,9 @@ export const routes: Routes = [
       import('./feature/p02-ngrx-http/p02-ngrx-http.routes').then((m) => m.P02_NGRX_HTTP_ROUTES),
   },
   {
-    path: 'p03-map',
-    loadChildren: () => import('./feature/p03-map/p03-map.routes').then((m) => m.P03_MAP_ROUTES),
+    path: 'p03-compo',
+    loadChildren: () =>
+      import('./feature/p03-compo/p03-compo.routes').then((m) => m.P03_COMPO_ROUTES),
   },
   {
     path: '',

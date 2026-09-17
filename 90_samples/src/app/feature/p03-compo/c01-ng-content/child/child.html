@@ -1,0 +1,16 @@
+<section>
+  <h3>child</h3>
+
+  <div class="header" style="background-color: #ddd">
+    <pre>ng-content select="[header]"</pre>
+    <ng-content select="[header]" />
+  </div>
+
+  <div class="body">
+    <ng-content />
+  </div>
+
+  <app-c01-grand>
+    <p>child から渡した本文</p>
+  </app-c01-grand>
+</section>
