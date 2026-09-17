@@ -1,16 +1,13 @@
-<section>
+<section style="background-color: #ccc">
   <h3>child</h3>
 
-  <div class="header" style="background-color: #ddd">
-    <pre>ng-content select="[header]"</pre>
+  <div class="header">
+    
     <ng-content select="[header]" />
-  </div>
-
-  <div class="body">
-    <ng-content />
+    <pre>⇨ &lt;ng-content select="[header]"&gt;</pre>
   </div>
 
   <app-c01-grand>
-    <p>child から渡した本文</p>
+    <ng-content /> <!-- こやつ headerは消化済みなので本文だけ -->
   </app-c01-grand>
 </section>
